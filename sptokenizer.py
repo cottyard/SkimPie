@@ -1,4 +1,7 @@
 def tokenize(source):
+    tokens = []
+    head = 0
+
     def is_blank(char):
         return char in (' ', '\n')
 
@@ -7,6 +10,7 @@ def tokenize(source):
 
     def next_token():
         nonlocal head
+
         while head < len(source) and is_blank(source[head]):
             head += 1
 
@@ -22,9 +26,6 @@ def tokenize(source):
             while head < len(source) and not is_blank(source[head]) and not is_delimiter(source[head]):
                 head += 1
             return source[begin:head]
-
-    tokens = []
-    head = 0
 
     t = next_token()
     while t is not None:

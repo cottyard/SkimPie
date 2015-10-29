@@ -1,19 +1,19 @@
-source_1 = """
-(+ 1 2)
-"""
-
-source_2 = """
-(+ 3 (* 5 6))
-"""
-
-source_3 = """
+s1 = """
   (+ (* 1 1)
-     (* 2 2)
-     (* 3 3)
+     (* 2 2 2)
+     (* 3 3 3)
      (* 4 4))
 """
 
-sources = [source_1, source_2, source_3]
+s2 = """
+(if (== 1 2) 3 4)
+"""
+
+s3 = """
+(if (<= 5 6) (+ 7 8) (+ 9 10))
+"""
+
+sources = [s1, s2, s3]
 
 import sptokenizer
 import spparser

@@ -1,3 +1,20 @@
+# if
+
+def if_clause(exp):
+    if exp[0] == 'if':
+        return True
+    return False
+
+def eval_if(exp, env):
+    if len(exp) != 4:
+        raise SyntaxError
+
+    condition = evaluate(exp[1], env)
+    if condition:
+        return evaluate(exp[2], env)
+    else:
+        return evaluate(exp[3], env)
+
 # self evaluating
 
 class SelfEvaluateError(BaseException):
@@ -54,10 +71,27 @@ def primitive_add(*arguments):
         result += a
     return result
 
+def primitive_equal(*arguments):
+    a0 = arguments[0]
+    for a1 in arguments[1:]:
+        if not a0 == a1:
+            return False
+        a0 = a1
+    return True
+
+def primitive_less_than(*arguments):
+    a0 = arguments[0]
+    for a1 in arguments[1:]:
+        if not a0 <= a1:
+            return False
+        a0 = a1
+    return True
 
 primitive_procedure_implementations = {
     '+': primitive_add,
-    '*': primitive_multiply
+    '*': primitive_multiply,
+    '==': primitive_equal,
+    '<=': primitive_less_than,
 }
 
 def apply_primitive(procedure, arguments):
@@ -65,6 +99,7 @@ def apply_primitive(procedure, arguments):
     return impl(*arguments)
 
 def apply(procedure, arguments):
+    #print('applying', procedure, 'to', arguments)
     if primitive_procedure(procedure):
         return apply_primitive(procedure, arguments)
     else:
@@ -74,10 +109,17 @@ def apply(procedure, arguments):
 
 evaluators = [
     (self_evaluating, self_evaluator),
-    (application, application_evaluator)
+    (if_clause, eval_if),
+    (application, application_evaluator),
 ]
 
+""" python values that evaluate returns:
+int/float for scheme number
+str for scheme symbol
+list for scheme list
+"""
 def evaluate(exp, env):
+    #print('evaluating', exp)
     for determinator, evaluator in evaluators:
         if determinator(exp):
             return evaluator(exp, env)
