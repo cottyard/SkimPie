@@ -26,11 +26,30 @@ def primitive_less_than(args):
         a0 = a1
     return True
 
+def primitive_cons(args):
+    exp, s_exp = args
+    return [exp] + s_exp
+
+def primitive_car(args):
+    s_exp = args[0]
+    return s_exp[0]
+
+def primitive_cdr(args):
+    s_exp = args[0]
+    return s_exp[1:]
+
+def primitive_list(args):
+    return list(args)
+
 built_ins = {
     '+': primitive_add,
     '*': primitive_multiply,
     '==': primitive_equal,
-    '<=': primitive_less_than
+    '<=': primitive_less_than,
+    'cons': primitive_cons,
+    'car': primitive_car,
+    'cdr': primitive_cdr,
+    'list': primitive_list
 }
 
 class Environment:

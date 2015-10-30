@@ -10,6 +10,9 @@ def is_int(exp):
 def is_if(exp):
     return exp[0] == 'if'
 
+def is_quote(exp):
+    return exp[0] == 'quote'
+
 def parse_atom(exp):
     if is_int(exp):
         return Int(exp)
@@ -21,6 +24,8 @@ def parse_exp(exp):
         return parse_atom(exp)
     elif is_if(exp):
         return If(parse_exp(exp[1]), parse_exp(exp[2]), parse_exp(exp[3]))
+    elif is_quote(exp):
+        return Quote(exp[1])
     else:
         return Application(parse_exp(exp[0]), list(map(parse_exp, exp[1:])))
 

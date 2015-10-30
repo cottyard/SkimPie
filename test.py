@@ -13,7 +13,11 @@ s3 = """
 (if (<= 5 6) (+ 7 8) (+ 9 10))
 """
 
-sources = [s1, s2, s3]
+s4 = """
+(cons 4 (list (car (cdr (quote (1 2 3))))))
+"""
+
+sources = [s1, s2, s3, s4]
 
 import sptokenizer
 import spparser
@@ -22,5 +26,5 @@ import environment
 for s in sources:
     s = sptokenizer.tokenize(s)
     s = spparser.parse(s)
-    print('parsed', s)
-    print('evaluated to', s.eval(environment.global_env))
+    print('parsed:', s)
+    print('evaluated to:', s.eval(environment.global_env))

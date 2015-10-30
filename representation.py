@@ -38,6 +38,18 @@ class If:
         else:
             return self.when_false.eval(env)
 
+
+class Quote:
+    def __init__(self, s_exp):
+        self.s_exp = s_exp
+
+    def __str__(self):
+        return str(self.s_exp)
+
+    def eval(self, env):
+        return self.s_exp
+
+
 class Application:
     def __init__(self, proc, args):
         self.proc = proc
