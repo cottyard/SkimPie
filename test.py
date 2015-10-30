@@ -17,11 +17,10 @@ sources = [s1, s2, s3]
 
 import sptokenizer
 import spparser
-import evaluator
+import environment
 
 for s in sources:
     s = sptokenizer.tokenize(s)
     s = spparser.parse(s)
     print('parsed', s)
-    #s = evaluator.evaluate(s, {})
-    #print('evaluated', s)
+    print('evaluated to', s.eval(environment.global_env))
