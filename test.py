@@ -25,7 +25,15 @@ s6 = """
 name
 """
 
-sources = [s1, s2, s3, s4, s5, s6]
+s7 = """
+((lambda (x) (+ x 1)) 2)
+"""
+
+s8 = """
+((lambda (f) (f 1))(lambda (x) (+ x 6)))
+"""
+
+sources = [s1, s2, s3, s4, s5, s6, s7, s8]
 
 import sptokenizer
 import spparser

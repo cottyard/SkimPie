@@ -52,15 +52,29 @@ built_ins = {
     'list': primitive_list
 }
 
+class UnresolvedSymbolError(BaseException):
+    pass
+
 class Environment:
     def __init__(self, dict, parent=None):
         self.env = dict
         self.parent = parent
 
     def lookup(self, symbol):
-        return self.env[symbol] if symbol in self.env else self.parent.lookup(symbol)
+        if symbol in self.env:
+            return self.env[symbol]
+        else:
+            if self.parent is None:
+                raise UnresolvedSymbolError(symbol)
+            return self.parent.lookup(symbol)
 
     def set(self, name, value):
         self.env[name] = value
+
+    def nested(self):
+        return Environment({}, self)
+
+    def __str__(self):
+        return str(self.env)
 
 global_env = Environment(built_ins)

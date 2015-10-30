@@ -64,8 +64,8 @@ class Application:
 
 
 class Define:
-    def __init__(self, name, value):
-        self.name = name
+    def __init__(self, symbol, value):
+        self.name = symbol.value
         self.value = value
 
     def __str__(self):
@@ -85,3 +85,32 @@ class DefineProc:
 
     def eval(self, env):
         pass
+
+class Lambda:
+    def __init__(self, params, body):
+        self.params = params
+        self.body = body
+
+    def __str__(self):
+        return '<lambda object>'
+
+    def eval(self, env):
+        return Procedure(self.params, self.body, env)
+
+# procedure
+
+class Procedure:
+    def __init__(self, params, body, env):
+        self.params = params
+        self.body = body
+        self.env = env
+
+    def __str__(self):
+        return "<proc object>"
+
+    # apply
+    def __call__(self, args):
+        nested_env = self.env.nested()
+        for symbol, value in zip(self.params, args):
+            nested_env.set(symbol.value, value)
+        return self.body.eval(nested_env)

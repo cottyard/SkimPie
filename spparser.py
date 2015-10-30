@@ -16,6 +16,9 @@ def is_quote(exp):
 def is_define(exp):
     return exp[0] == 'define'
 
+def is_lambda(exp):
+    return exp[0] == 'lambda'
+
 def parse_atom(exp):
     if is_int(exp):
         return Int(exp)
@@ -30,7 +33,9 @@ def parse_exp(exp):
     elif is_quote(exp):
         return Quote(exp[1])
     elif is_define(exp):
-        return Define(exp[1], exp[2])
+        return Define(parse_exp(exp[1]), parse_exp(exp[2]))
+    elif is_lambda(exp):
+        return Lambda(list(map(parse_exp, exp[1])), parse_exp(exp[2]))
     else:
         return Application(parse_exp(exp[0]), list(map(parse_exp, exp[1:])))
 
