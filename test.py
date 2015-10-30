@@ -17,7 +17,15 @@ s4 = """
 (cons 4 (list (car (cdr (quote (1 2 3))))))
 """
 
-sources = [s1, s2, s3, s4]
+s5 = """
+(define name 6)
+"""
+
+s6 = """
+name
+"""
+
+sources = [s1, s2, s3, s4, s5, s6]
 
 import sptokenizer
 import spparser

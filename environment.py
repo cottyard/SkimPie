@@ -60,4 +60,7 @@ class Environment:
     def lookup(self, symbol):
         return self.env[symbol] if symbol in self.env else self.parent.lookup(symbol)
 
+    def set(self, name, value):
+        self.env[name] = value
+
 global_env = Environment(built_ins)

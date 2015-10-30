@@ -61,3 +61,27 @@ class Application:
 
     def eval(self, env):
         return self.proc.eval(env)([a.eval(env) for a in self.args])
+
+
+class Define:
+    def __init__(self, name, value):
+        self.name = name
+        self.value = value
+
+    def __str__(self):
+        return '%s = (%s)' % (self.name, str(self.value))
+
+    def eval(self, env):
+        env.set(self.name, self.value)
+        return None
+
+
+class DefineProc:
+    def __init__(self, name, params, body):
+        pass
+
+    def __str__(self):
+        pass
+
+    def eval(self, env):
+        pass
