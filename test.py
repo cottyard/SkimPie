@@ -21,8 +21,7 @@ import evaluator
 
 for s in sources:
     s = sptokenizer.tokenize(s)
-    print('tokenized', s)
     s = spparser.parse(s)
     print('parsed', s)
-    s = evaluator.evaluate(s, {})
-    print('evaluated', s)
+    #s = evaluator.evaluate(s, {})
+    #print('evaluated', s)

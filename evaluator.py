@@ -113,11 +113,6 @@ evaluators = [
     (application, application_evaluator),
 ]
 
-""" python values that evaluate returns:
-int/float for scheme number
-str for scheme symbol
-list for scheme list
-"""
 def evaluate(exp, env):
     #print('evaluating', exp)
     for determinator, evaluator in evaluators:
