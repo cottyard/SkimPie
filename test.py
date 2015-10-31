@@ -26,7 +26,9 @@ name
 """
 
 s7 = """
-((lambda (x) (+ x 1)) 2)
+(define inc
+    (lambda (x) (+ x 1)))
+(inc 1)
 """
 
 s8 = """
@@ -41,6 +43,6 @@ import environment
 
 for s in sources:
     s = sptokenizer.tokenize(s)
-    s = spparser.parse(s)
+    s = spparser.parse_program(s)
     print('parsed:', s)
     print('evaluated to:', s.eval(environment.global_env))

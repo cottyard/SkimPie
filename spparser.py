@@ -39,28 +39,37 @@ def parse_exp(exp):
     else:
         return Application(parse_exp(exp[0]), list(map(parse_exp, exp[1:])))
 
-def parse_to_exp(tokens):
-    def parse_exp():
+def read_one_exp(tokens, head=0):
+    def read_next_exp():
         nonlocal head
         if tokens[head] == ')':
-            raise SyntaxError('unexpected )')
+            source = ' '.join(tokens)
+            loc = sum((len(t) for t in tokens[:head])) + head
+            loc_str = ' ' * loc + '~'
+            raise SyntaxError('unexpected )\n%s\n%s' % (source, loc_str))
 
         if tokens[head] == '(':
             head += 1
             exp = []
             while tokens[head] != ')':
-                exp.append(parse_exp())
+                exp.append(read_next_exp())
             head += 1
             return exp
         else:
             head += 1
             return tokens[head - 1]
 
-    head = 0
-    return parse_exp()
+    return read_next_exp(), head
+
 
 class SyntaxError(Exception):
     pass
 
-def parse(tokens):
-    return parse_exp(parse_to_exp(tokens))
+
+def parse_program(tokens):
+    head = 0
+    parsed_exps = []
+    while head < len(tokens):
+        exp, head = read_one_exp(tokens, head)
+        parsed_exps.append(parse_exp(exp))
+    return Program(parsed_exps)

@@ -1,5 +1,6 @@
 # data
 
+
 class Int:
     def __init__(self, literal):
         self.value = int(literal)
@@ -9,6 +10,7 @@ class Int:
 
     def eval(self, env):
         return self.value
+
 
 class Symbol:
     def __init__(self, literal):
@@ -20,7 +22,22 @@ class Symbol:
     def eval(self, env):
         return env.lookup(self.value)
 
+
 # expressions
+
+
+class Program:
+    def __init__(self, expressions):
+        self.exps = expressions
+
+    def __str__(self):
+        return '\n'.join([str(e) for e in self.exps])
+
+    def eval(self, env):
+        for e in self.exps:
+            v = e.eval(env)
+        return v
+
 
 class If:
     def __init__(self, cond, when_true, when_false):
@@ -51,16 +68,16 @@ class Quote:
 
 
 class Application:
-    def __init__(self, proc, args):
-        self.proc = proc
+    def __init__(self, proc_to_be, args):
+        self.proc_to_be = proc_to_be
         self.args = args
 
     def __str__(self):
         return '(%s)(%s)' % (
-            str(self.proc), ', '.join(list(map(str, self.args))))
+            str(self.proc_to_be), ', '.join(list(map(str, self.args))))
 
     def eval(self, env):
-        return self.proc.eval(env)([a.eval(env) for a in self.args])
+        return self.proc_to_be.eval(env)([a.eval(env) for a in self.args])
 
 
 class Define:
@@ -72,7 +89,7 @@ class Define:
         return '%s = (%s)' % (self.name, str(self.value))
 
     def eval(self, env):
-        env.set(self.name, self.value)
+        env.set(self.name, self.value.eval(env))
         return None
 
 
@@ -86,6 +103,7 @@ class DefineProc:
     def eval(self, env):
         pass
 
+
 class Lambda:
     def __init__(self, params, body):
         self.params = params
@@ -95,9 +113,11 @@ class Lambda:
         return '<lambda object>'
 
     def eval(self, env):
-        return Procedure(self.params, self.body, env)
+        return Procedure(self.params, [self.body], env)
+
 
 # procedure
+
 
 class Procedure:
     def __init__(self, params, body, env):
@@ -113,4 +133,6 @@ class Procedure:
         nested_env = self.env.nested()
         for symbol, value in zip(self.params, args):
             nested_env.set(symbol.value, value)
-        return self.body.eval(nested_env)
+        for expression in self.body[:-1]:
+            expression.eval(nested_env)
+        return self.body[-1].eval(nested_env)

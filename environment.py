@@ -41,6 +41,9 @@ def primitive_cdr(args):
 def primitive_list(args):
     return list(args)
 
+def primitive_begin(args):
+    return args[-1]
+
 built_ins = {
     '+': primitive_add,
     '*': primitive_multiply,
@@ -49,7 +52,8 @@ built_ins = {
     'cons': primitive_cons,
     'car': primitive_car,
     'cdr': primitive_cdr,
-    'list': primitive_list
+    'list': primitive_list,
+    'begin': primitive_begin
 }
 
 class UnresolvedSymbolError(BaseException):
