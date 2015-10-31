@@ -4,6 +4,12 @@ def primitive_add(args):
         result += a
     return result
 
+def primitive_substract(args):
+    result = 0
+    for a in args:
+        result -= a
+    return result
+
 def primitive_multiply(args):
     result = 1
     for a in args:
@@ -46,8 +52,9 @@ def primitive_begin(args):
 
 built_ins = {
     '+': primitive_add,
+    '-': primitive_substract,
     '*': primitive_multiply,
-    '==': primitive_equal,
+    '=': primitive_equal,
     '<=': primitive_less_than,
     'cons': primitive_cons,
     'car': primitive_car,
