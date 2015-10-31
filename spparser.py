@@ -43,16 +43,15 @@ def read_one_exp(tokens, head=0):
     def read_next_exp():
         nonlocal head
         if tokens[head] == ')':
-            source = ' '.join(tokens)
-            loc = sum((len(t) for t in tokens[:head])) + head
-            loc_str = ' ' * loc + '~'
-            raise SyntaxError('unexpected )\n%s\n%s' % (source, loc_str))
+            raise SyntaxError('unexpected )', tokens, head)
 
         if tokens[head] == '(':
             head += 1
             exp = []
-            while tokens[head] != ')':
+            while head < len(tokens) and tokens[head] != ')':
                 exp.append(read_next_exp())
+            if head >= len(tokens):
+                raise SyntaxError('expecting )', tokens, head)
             head += 1
             return exp
         else:
@@ -63,8 +62,14 @@ def read_one_exp(tokens, head=0):
 
 
 class SyntaxError(Exception):
-    pass
+    def __init__(self, msg, tokens, head):
+        source = ' '.join(tokens)
+        loc = sum((len(t) for t in tokens[:head])) + head
+        loc_str = ' ' * loc + '~'
+        self._message = '%s\n%s\n%s\n' % (msg, source, loc_str)
 
+    def __str__(self):
+        return self._message
 
 def parse_program(tokens):
     head = 0

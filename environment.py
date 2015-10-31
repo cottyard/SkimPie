@@ -1,18 +1,18 @@
 def primitive_add(args):
-    result = 0
-    for a in args:
+    result = args[0]
+    for a in args[1:]:
         result += a
     return result
 
 def primitive_substract(args):
-    result = 0
-    for a in args:
+    result = args[0]
+    for a in args[1:]:
         result -= a
     return result
 
 def primitive_multiply(args):
-    result = 1
-    for a in args:
+    result = args[0]
+    for a in args[1:]:
         result *= a
     return result
 

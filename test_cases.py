@@ -27,13 +27,13 @@ case6 = """
 ((lambda (f) (f 1))(lambda (x) (+ x 6)))
 """
 
-# case7 = """
-# (define factorial (lambda (n)
-#     (if (= n 1)
-#         1
-#         (factorial (- n 1)))))
-# (factorial 6)
-# """
+case7 = """
+(define factorial (lambda (n)
+    (if (= n 1)
+        1
+        (* n (factorial (- n 1))))))
+(factorial 6)
+"""
 
 import re
 

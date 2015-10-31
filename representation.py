@@ -77,7 +77,9 @@ class Application:
             str(self.proc_to_be), ', '.join(list(map(str, self.args))))
 
     def eval(self, env):
-        return self.proc_to_be.eval(env)([a.eval(env) for a in self.args])
+        procedure = self.proc_to_be.eval(env)
+        evaluated_args = [a.eval(env) for a in self.args]
+        return procedure(evaluated_args)
 
 
 class Define:
@@ -125,7 +127,7 @@ class Procedure:
         self.body = body
         self.env = env
 
-    def __str__(self):
+    def __repr__(self):
         return "<proc object>"
 
     # apply
