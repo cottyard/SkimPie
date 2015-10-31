@@ -79,6 +79,10 @@ class Application:
     def eval(self, env):
         procedure = self.proc_to_be.eval(env)
         evaluated_args = [a.eval(env) for a in self.args]
+        # if isinstance(self.proc_to_be, Symbol):
+        #     print('applying', self.proc_to_be.value, 'to', evaluated_args)
+        # else:
+        #     print('applying to', evaluated_args)
         return procedure(evaluated_args)
 
 

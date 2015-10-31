@@ -35,6 +35,25 @@ case7 = """
 (factorial 6)
 """
 
+# this is the normal-order Y combinator
+# (define Y (lambda (f) (lambda (x) (f (x x))))(lambda (x) (f (x x))))
+
+case8 = """
+(define Y (lambda (f)
+  ((lambda (x)
+     (f (lambda (y) ((x x) y))))
+   (lambda (x)
+     (f (lambda (y) ((x x) y)))))))
+
+(define fac-to-be (lambda (f)
+  (lambda (n)
+    (if (= n 1)
+        1
+        (* n (f (- n 1)))))))
+
+((Y fac-to-be) 5)
+"""
+
 import re
 
 def all_cases():
