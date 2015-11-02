@@ -14,7 +14,10 @@ def is_quote(exp):
     return exp[0] == 'quote'
 
 def is_define(exp):
-    return exp[0] == 'define'
+    return exp[0] == 'define' and not isinstance(exp[1], list)
+
+def is_defineproc(exp):
+    return exp[0] == 'define' and isinstance(exp[1], list)
 
 def is_lambda(exp):
     return exp[0] == 'lambda'
@@ -34,6 +37,9 @@ def parse_exp(exp):
         return Quote(exp[1])
     elif is_define(exp):
         return Define(parse_exp(exp[1]), parse_exp(exp[2]))
+    elif is_defineproc(exp):
+        symbols = list(map(Symbol, exp[1]))
+        return DefineProc(symbols[0], symbols[1:], list(map(parse_exp, exp[2:])))
     elif is_lambda(exp):
         return Lambda(list(map(parse_exp, exp[1])), parse_exp(exp[2]))
     else:

@@ -54,6 +54,21 @@ case8 = """
 ((Y fac-to-be) 5)
 """
 
+case9 = """
+(define TRUE
+  (lambda (x)
+    (lambda (y) x)))
+
+(define FALSE
+  (lambda (x)
+    (lambda (y) y)))
+
+(define (IF cond when-true when-false)
+  ((cond when-true) when-false))
+
+(cons (IF TRUE 1 2) (cons (IF FALSE 1 2) (quote ())))
+"""
+
 import re
 
 def all_cases():

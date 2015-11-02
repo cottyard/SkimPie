@@ -87,8 +87,8 @@ class Application:
 
 
 class Define:
-    def __init__(self, symbol, value):
-        self.name = symbol.value
+    def __init__(self, name, value):
+        self.name = name.value
         self.value = value
 
     def __str__(self):
@@ -101,13 +101,16 @@ class Define:
 
 class DefineProc:
     def __init__(self, name, params, body):
-        pass
+        self.name = name.value
+        self.params = params
+        self.body = body
 
     def __str__(self):
-        pass
+        return '%s = <proc object>' % name
 
     def eval(self, env):
-        pass
+        env.set(self.name, Procedure(self.params, self.body, env))
+        return None
 
 
 class Lambda:
