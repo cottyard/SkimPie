@@ -69,6 +69,10 @@ case9 = """
 (cons (IF TRUE 1 2) (cons (IF FALSE 1 2) (quote ())))
 """
 
+case_10 = """
+(cons '4 '(1 2 3))
+"""
+
 import re
 
 def all_cases():

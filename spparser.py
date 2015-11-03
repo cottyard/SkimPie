@@ -34,7 +34,7 @@ def parse_exp(exp):
     elif is_if(exp):
         return If(parse_exp(exp[1]), parse_exp(exp[2]), parse_exp(exp[3]))
     elif is_quote(exp):
-        return Quote(exp[1])
+        return List(exp[1])
     elif is_define(exp):
         return Define(parse_exp(exp[1]), parse_exp(exp[2]))
     elif is_defineproc(exp):
@@ -50,6 +50,10 @@ def read_one_exp(tokens, head=0):
         nonlocal head
         if tokens[head] == ')':
             raise SyntaxError('unexpected )', tokens, head)
+
+        if tokens[head] == '\'':
+            head += 1
+            return ['quote', read_next_exp()]
 
         if tokens[head] == '(':
             head += 1

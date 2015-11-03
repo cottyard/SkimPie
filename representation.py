@@ -17,10 +17,21 @@ class Symbol:
         self.value = literal
 
     def __str__(self):
-        return self.value
+        return "'%s'" % self.value
 
     def eval(self, env):
         return env.lookup(self.value)
+
+
+class List:
+    def __init__(self, s_exp):
+        self.s_exp = s_exp
+
+    def __str__(self):
+        return str(self.s_exp)
+
+    def eval(self, env):
+        return self.s_exp
 
 
 # expressions
@@ -34,6 +45,7 @@ class Program:
         return '\n'.join([str(e) for e in self.exps])
 
     def eval(self, env):
+        v = None
         for e in self.exps:
             v = e.eval(env)
         return v
@@ -54,17 +66,6 @@ class If:
             return self.when_true.eval(env)
         else:
             return self.when_false.eval(env)
-
-
-class Quote:
-    def __init__(self, s_exp):
-        self.s_exp = s_exp
-
-    def __str__(self):
-        return str(self.s_exp)
-
-    def eval(self, env):
-        return self.s_exp
 
 
 class Application:
@@ -106,7 +107,7 @@ class DefineProc:
         self.body = body
 
     def __str__(self):
-        return '%s = <proc object>' % name
+        return '%s = <proc object>' % self.name
 
     def eval(self, env):
         env.set(self.name, Procedure(self.params, self.body, env))
