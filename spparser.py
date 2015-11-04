@@ -1,4 +1,5 @@
 from representation import *
+from spexception import *
 
 def is_int(exp):
     try:
@@ -49,7 +50,7 @@ def read_one_exp(tokens, head=0):
     def read_next_exp():
         nonlocal head
         if tokens[head] == ')':
-            raise SyntaxError('unexpected )', tokens, head)
+            raise PieSyntaxError('unexpected )', tokens, head)
 
         if tokens[head] == '\'':
             head += 1
@@ -61,7 +62,7 @@ def read_one_exp(tokens, head=0):
             while head < len(tokens) and tokens[head] != ')':
                 exp.append(read_next_exp())
             if head >= len(tokens):
-                raise SyntaxError('expecting )', tokens, head)
+                raise PieSyntaxError('expecting )', tokens, head)
             head += 1
             return exp
         else:
@@ -69,17 +70,6 @@ def read_one_exp(tokens, head=0):
             return tokens[head - 1]
 
     return read_next_exp(), head
-
-
-class SyntaxError(Exception):
-    def __init__(self, msg, tokens, head):
-        source = ' '.join(tokens)
-        loc = sum((len(t) for t in tokens[:head])) + head
-        loc_str = ' ' * loc + '~'
-        self._message = '%s\n%s\n%s\n' % (msg, source, loc_str)
-
-    def __str__(self):
-        return self._message
 
 def parse_program(tokens):
     head = 0
