@@ -12,6 +12,17 @@ class Int:
         return self.value
 
 
+class Float:
+    def __init__(self, literal):
+        self.value = float(literal)
+
+    def __str__(self):
+        return str(self.value)
+
+    def eval(self, env):
+        return self.value
+
+
 class Symbol:
     def __init__(self, literal):
         self.value = literal

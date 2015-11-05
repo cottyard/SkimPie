@@ -22,6 +22,19 @@ def primitive_multiply(args):
     return result
 
 
+def primitive_divide(args):
+    result = args[0]
+    for a in args[1:]:
+        result /= a
+    return result
+
+
+def primitive_mod(args):
+    assert len(args) == 2
+    n1, n2 = args
+    return n1 % n2
+
+
 def primitive_equal(args):
     a0 = args[0]
     for a1 in args[1:]:
@@ -62,17 +75,24 @@ def primitive_list(args):
 def primitive_begin(args):
     return args[-1]
 
+
+def primitive_exit(args):
+    exit(0)
+
 built_ins = {
     '+': primitive_add,
     '-': primitive_substract,
     '*': primitive_multiply,
+    '/': primitive_divide,
+    'mod': primitive_mod,
     '=': primitive_equal,
     '<=': primitive_less_than,
     'cons': primitive_cons,
     'car': primitive_car,
     'cdr': primitive_cdr,
     'list': primitive_list,
-    'begin': primitive_begin
+    'begin': primitive_begin,
+    'exit': primitive_exit
 }
 
 

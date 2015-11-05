@@ -8,6 +8,13 @@ def is_int(exp):
     except (ValueError, TypeError):
         return False
 
+def is_float(exp):
+    try:
+        float(exp)
+        return True
+    except (ValueError, TypeError):
+        return False
+
 def is_if(exp):
     return exp[0] == 'if'
 
@@ -26,6 +33,8 @@ def is_lambda(exp):
 def parse_atom(exp):
     if is_int(exp):
         return Int(exp)
+    elif is_float(exp):
+        return Float(exp)
     else:
         return Symbol(exp)
 
