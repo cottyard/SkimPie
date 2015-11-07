@@ -86,6 +86,7 @@ built_ins = {
     '/': primitive_divide,
     'mod': primitive_mod,
     '=': primitive_equal,
+    'eq?': primitive_equal,
     '<=': primitive_less_than,
     'cons': primitive_cons,
     'car': primitive_car,
@@ -102,12 +103,15 @@ class Environment:
         self.parent = parent
 
     def lookup(self, symbol):
+        return self.find_env(symbol)[symbol]
+
+    def find_env(self, symbol):
         if symbol in self.env:
-            return self.env[symbol]
+            return self.env
         else:
             if self.parent is None:
                 raise PieUnresolvedSymbolError(symbol)
-            return self.parent.lookup(symbol)
+            return self.parent.find_env(symbol)
 
     def set(self, name, value):
         self.env[name] = value
@@ -118,4 +122,3 @@ class Environment:
     def __str__(self):
         return str(self.env)
 
-global_env = Environment(built_ins)

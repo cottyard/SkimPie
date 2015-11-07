@@ -47,6 +47,18 @@ class List:
 
 # expressions
 
+class Assignment:
+    def __init__(self, symbol, value_exp):
+        self.identifier = symbol.value
+        self.value_exp = value_exp
+
+    def __str__(self):
+        return "%s := %s" % (str(self.identifier), str(self.value_exp))
+
+    def eval(self, env):
+        env.find_env(self.identifier)[self.identifier] = self.value_exp.eval(env)
+        return None
+
 
 class Program:
     def __init__(self, expressions):
