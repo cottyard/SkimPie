@@ -33,7 +33,7 @@ def repl():
         try:
             tokens = sptokenizer.tokenize(source)
             ast = spparser.parse_program(tokens)
-            value = ast.eval(environment.global_env)
+            value = ast.eval(environment.Environment(environment.built_ins))
         except Exception:
             print(traceback.format_exc())
         else:
