@@ -96,6 +96,30 @@ case_lazy_if = ("""
 (if (= 0 0) 1 (/ 1 0))
 """, 1)
 
+case_lazy_stream_pipe = ("""
+(define (s-cons x y)
+  (lambda (m) (m x y)))
+
+(define (s-car z)
+  (z (lambda (p q) p)))
+
+(define (s-cdr z)
+  (z (lambda (p q) q)))
+
+(define (numsfrom n) 
+  (s-cons n (numsfrom (+ n 1))))
+
+(define (map proc items)
+  (if (= items '())
+      '()
+      (s-cons (proc (s-car items))
+            (map proc (s-cdr items)))))
+
+(define (sqr n) (* n n))
+
+(s-car (s-cdr (s-cdr (map sqr (numsfrom 3)))))
+""", 25)
+
 import re
 
 
