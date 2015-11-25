@@ -2,8 +2,9 @@ import sptokenizer
 import spparser
 import environment
 import traceback
+import apply
 
-prompt = 'pie > '
+prompt = 'lazy pie > '
 
 
 def read_input():
@@ -33,7 +34,7 @@ def repl():
         try:
             tokens = sptokenizer.tokenize(source)
             ast = spparser.parse_program(tokens)
-            value = ast.eval(environment.global_env)
+            value = apply.force(ast.eval(environment.Environment(environment.built_ins)))
         except Exception:
             print(traceback.format_exc())
         else:

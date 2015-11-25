@@ -1,3 +1,5 @@
+import apply
+
 # data
 
 
@@ -85,29 +87,24 @@ class If:
             str(self.cond), str(self.when_true), str(self.when_false))
 
     def eval(self, env):
-        if self.cond.eval(env):
+        if apply.force(self.cond.eval(env)):
             return self.when_true.eval(env)
         else:
             return self.when_false.eval(env)
 
 
 class Application:
-    def __init__(self, proc_to_be, args):
+    def __init__(self, proc_to_be, arg_exps):
         self.proc_to_be = proc_to_be
-        self.args = args
+        self.arg_exps = arg_exps
 
     def __str__(self):
         return '(%s)(%s)' % (
-            str(self.proc_to_be), ', '.join(list(map(str, self.args))))
+            str(self.proc_to_be), ', '.join(list(map(str, self.arg_exps))))
 
     def eval(self, env):
-        procedure = self.proc_to_be.eval(env)
-        evaluated_args = [a.eval(env) for a in self.args]
-        # if isinstance(self.proc_to_be, Symbol):
-        #     print('applying', self.proc_to_be.value, 'to', evaluated_args)
-        # else:
-        #     print('applying to', evaluated_args)
-        return procedure(evaluated_args)
+        procedure = apply.force(self.proc_to_be.eval(env))
+        return apply.apply(procedure, self.arg_exps, env)
 
 
 class Define:
@@ -133,7 +130,7 @@ class DefineProc:
         return '%s = <proc object>' % self.name
 
     def eval(self, env):
-        env.set(self.name, Procedure(self.params, self.body, env))
+        env.set(self.name, apply.Procedure(self.params, self.body, env))
         return None
 
 
@@ -146,26 +143,4 @@ class Lambda:
         return '<lambda object>'
 
     def eval(self, env):
-        return Procedure(self.params, [self.body], env)
-
-
-# procedure
-
-
-class Procedure:
-    def __init__(self, params, body, env):
-        self.params = params
-        self.body = body
-        self.env = env
-
-    def __repr__(self):
-        return "<proc object>"
-
-    # apply
-    def __call__(self, args):
-        nested_env = self.env.nested()
-        for symbol, value in zip(self.params, args):
-            nested_env.set(symbol.value, value)
-        for expression in self.body[:-1]:
-            expression.eval(nested_env)
-        return self.body[-1].eval(nested_env)
+        return apply.Procedure(self.params, [self.body], env)
