@@ -92,6 +92,9 @@ case_set_and_closure = ("""
 ((obj 'read))
 """, 2)
 
+case_lazy_if = ("""
+(if (= 0 0) 1 (/ 1 0))
+""", 1)
 
 import re
 
