@@ -31,8 +31,6 @@ case_recursion = ("""
 (factorial 6)
 """, 720)
 
-# this is the normal-order Y combinator
-# (define Y (lambda (f) (lambda (x) (f (x x))))(lambda (x) (f (x x))))
 
 case_Y_combinator = ("""
 (define Y (lambda (f)
@@ -119,6 +117,20 @@ case_lazy_stream_pipe = ("""
 
 (s-car (s-cdr (s-cdr (map sqr (numsfrom 3)))))
 """, 25)
+
+case_normal_Y_combinator = ("""
+(define Y (lambda (f) 
+    ((lambda (x) (f (x x))) (lambda (x) (f (x x))))))
+
+(define fac-to-be (lambda (f)
+  (lambda (n)
+    (if (= n 1)
+        1
+        (* n (f (- n 1)))))))
+
+((Y fac-to-be) 7)
+""", 5040)
+
 
 import re
 
